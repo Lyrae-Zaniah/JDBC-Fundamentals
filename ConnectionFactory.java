@@ -1,20 +1,30 @@
 package JDBC;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectionFactory {
 
     public static Connection getConnection() {
         try {
-            final String url = "jdbc:mysql://localhost/curso_java?verifyServerCertificate=false&useSSL=true";
-            final String username = "root";
-            final String password = "Gm@741qaz";
+            Properties prop = getProperties();
+            final String url = prop.getProperty("database.url");
+            final String username = prop.getProperty("database.user");
+            final String password = prop.getProperty("database.password");
 
             return DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Properties getProperties() throws IOException {
+        Properties prop = new Properties();
+        String path = "/connection.properties";
+        prop.load(ConnectionFactory.class.getResourceAsStream(path));
+        return prop;
     }
 }
