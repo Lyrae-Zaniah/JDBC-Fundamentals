@@ -1,6 +1,9 @@
 package JDBC;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,12 +23,12 @@ public class ConsultPeople2 {
         stmt.setString(1, "%" + research + "%");
         ResultSet result = stmt.executeQuery();
 
-        List<Person> people = new ArrayList<>();
+        List<JDBC.Person> people = new ArrayList<>();
 
         while (result.next()) {
             int code = result.getInt("Code");
             String name = result.getString("Name");
-            people.add(new Person(code, name));
+            people.add(new JDBC.Person(code, name));
         }
 
         for (Person p : people) {
